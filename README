@@ -1,0 +1,39 @@
+MysqlRequirement
+================
+
+With this plugin you can ensure that the version and encoding of
+the MySQL server that your Rails application connects to are correct
+and abort otherwise when the server starts up.
+
+The plugin provides a method for you to invoke at the end of your
+config/environment.rb file to ensure that the database encoding (charset)
+of your MySQL database is set properly. If the database encoding/charset of
+your MySQL server, connection, and client don't all correspond to the encoding
+that you require then the server will abort with an informative 
+error message. There is some background in this post:
+
+http://www.marklunds.com/articles/one/337
+
+Install the plugin with:
+
+ruby script/plugin install http://svn.marklunds.com/plugins/require_mysql_encoding
+
+Thanks to the Advanced Pragmatic Rails Studio and the Pragmatic Programmers for
+the original source code and to Mike Clark for letting me share the code.
+
+Example
+=======
+
+If you are on Rails 2, add the file config/initializers/mysql_requirement.rb, or on an earlier
+version of Rails, stick the lines in config/environment.rb:
+
+MysqlRequirement.require do |req|  
+  req.encoding
+  req.version /^5/
+  req.c_driver
+  req.sql_mode "TRADITIONAL"
+end
+
+That will make sure MySQL is configured for UTF8, is version 5.x, and uses the C driver in production.
+
+Copyright (c) 2007 Peter Marklund, released under the MIT license
